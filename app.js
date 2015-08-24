@@ -12,10 +12,6 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get('/test', function (req, res) {
-    res.send('test OK');
-});
-
 app.use(function(req, res, next){
     res.status(404);
     log.debug('Not found URL: %s',req.url);
@@ -28,6 +24,26 @@ app.use(function(err, req, res, next){
     log.error('Internal error(%d): %s',res.statusCode,err.message);
     res.send({ error: err.message });
     return;
+});
+
+// Список конактов
+app.get('/contacts', function(req, res) {
+});
+
+// Создать конакт
+app.post('/contacts', function(req, res) {
+});
+
+// Получить конакт
+app.get('/contacts/:id', function(req, res) {
+});
+
+// Изменить конакт
+app.put('/contacts/:id', function(req, res) {
+});
+
+// Удалить конактов
+app.del('/contacts/:id', function(req, res) {
 });
 
 app.listen(config.get('port'), function(){

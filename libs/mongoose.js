@@ -1,6 +1,7 @@
 var mongoose    = require('mongoose');
 var config      = require('./config');
 var log         = require('./log')(module);
+var crypto      = require('crypto');
 
 mongoose.connect(config.get('mongoose:uri'));
 
@@ -28,12 +29,10 @@ var ContactSchema = new Schema({
     photo: [PhotosSchema]
 });
 
-var Contact = mongoose.model('Contact', ContactSchema);
-
-var crypto      = require('crypto');
+var ContactModel = mongoose.model('Contact', ContactSchema);
 
 // User
-var User = new Schema({
+var UserSchema = new Schema({
     username: {
         type: String,
         unique: true,
@@ -71,6 +70,7 @@ User.methods.checkPassword = function(password) {
     return this.encryptPassword(password) === this.hashedPassword;
 };
 
-var UserModel = mongoose.model('User', User);
+var UserModel = mongoose.model('User', UserSchema);
 
-module.exports.Contact = Contact;
+module.exports.ContactModel = ContactModel;
+module.exports.UserModel    = UserModel;
