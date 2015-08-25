@@ -4,7 +4,11 @@ import Input        from './Input.jsx';
 module.exports = React.createClass({
 
     getInitialState: function() {
-        return {contact: {}}
+        return {contact: this.props.curentContact};
+    },
+
+    componentWillReceiveProps: function (nextProps) {
+        this.setState({contact: nextProps.curentContact});
     },
 
     handleTextFieldChange: function(e) {
@@ -14,7 +18,7 @@ module.exports = React.createClass({
 
     onSubmitForm: function(e) {
         e.preventDefault();
-        console.log(this.state.contact);
+        if(this.props.onSaveContact) this.props.onSaveContact(this.state.contact);
     },
 
     render: function() {
