@@ -48,16 +48,16 @@ var UserSchema = new Schema({
     }
 });
 
-User.methods.encryptPassword = function(password) {
+UserSchema.methods.encryptPassword = function(password) {
     return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 };
 
-User.virtual('userId')
+UserSchema.virtual('userId')
     .get(function () {
         return this.id;
     });
 
-User.virtual('password')
+UserSchema.virtual('password')
     .set(function(password) {
         this._plainPassword = password;
         this.salt = crypto.randomBytes(32).toString('base64');
@@ -66,7 +66,7 @@ User.virtual('password')
     .get(function() { return this._plainPassword; });
 
 
-User.methods.checkPassword = function(password) {
+UserSchema.methods.checkPassword = function(password) {
     return this.encryptPassword(password) === this.hashedPassword;
 };
 
