@@ -1,8 +1,10 @@
 var express         = require('express');
+var routes          = require('./routes');
 var path            = require('path');
+var _               = require('lodash');
 var log             = require('./libs/log')(module);
 var config          = require('./libs/config');
-var Contact         = require('./libs/mongoose').Contact;
+var ContactModel    = require('./libs/mongoose').ContactModel;
 
 var app = express.createServer();
 
@@ -28,25 +30,12 @@ app.use(function(err, req, res, next){
     return;
 });
 
-// Список конактов
-app.get('/contacts', function(req, res) {
-});
-
-// Создать конакт
-app.post('/contacts', function(req, res) {
-});
-
-// Получить конакт
-app.get('/contacts/:id', function(req, res) {
-});
-
-// Изменить конакт
-app.put('/contacts/:id', function(req, res) {
-});
-
-// Удалить конактов
-app.del('/contacts/:id', function(req, res) {
-});
+// CRUD
+app.get('/contacts',        routes.getContacts);
+app.post('/contacts',       routes.addContact);
+app.get('/contacts/:id',    routes.getContact);
+app.put('/contacts/:id',    routes.updateContact);
+app.del('/contacts/:id',    routes.removeContact);
 
 app.listen(config.get('port'), function(){
     log.info('Express server listening on port ' + config.get('port'));

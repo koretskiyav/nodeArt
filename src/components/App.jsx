@@ -1,31 +1,8 @@
 import React        from 'react';
 import _            from 'lodash';
+import $            from 'jquery';
 import ContactList  from './ContactList.jsx';
 import ContactEdit  from './ContactEdit.jsx';
-
-var contacts = [
-    {
-        id: '1',
-        name: 'name0',
-        surName: 'surName0',
-        phone: 'phone0',
-        comment: 'comment0'
-    },
-    {
-        id: '2',
-        name: 'name1',
-        surName: 'surName1',
-        phone: 'phone1',
-        comment: 'comment1'
-    },
-    {
-        id: '3',
-        name: 'name2',
-        surName: 'surName2',
-        phone: 'phone2',
-        comment: 'comment2'
-    }
-];
 
 module.exports = React.createClass({
 
@@ -36,30 +13,70 @@ module.exports = React.createClass({
         };
     },
 
-    componentDidMount: function() {
-        this.setState({contacts: contacts});
+    componentWillMount: function() {
+        this.getContacts();
     },
 
-    handleListClick: function(id) {
-        this.setState({curentId: id});
+    handleListClick: function(_id) {
+        this.setState({curentId: _id});
+    },
+
+    handAddClick: function() {
+        this.setState({curentId: 'new'});
+    },
+
+    handRemoveClick: function(_id) {
+        $.ajax({
+          method: 'DELETE',
+          url: '../contacts/' + this.state.curentId
+        })
+            .done(function() {
+                this.setState({curentId: null});
+                this.getContacts();
+            }.bind(this));
+    },
+
+    getContacts: function() {
+        $.ajax({
+          method: 'GET',
+          url: './contacts/'
+        })
+            .done(function(contacts) {
+                this.setState({contacts: contacts});
+            }.bind(this))
     },
 
     onSaveContact: function(contact) {
-        let curentContact = _.find(contacts, {id: this.state.curentId});
-
-        curentContact.name      = contact.name;
-        curentContact.surName   = contact.surName;
-        curentContact.phone     = contact.phone;
-        curentContact.comment   = contact.comment;
-
-        this.setState({contacts: contacts});
+        if (contact._id === 'new') {
+            $.ajax({
+              method: 'POST',
+              url: '../contacts/',
+              data: contact
+            })
+                .done(function(_id) {
+                    this.setState({curentId: _id});
+                    this.getContacts();
+                }.bind(this));
+        } else {
+            $.ajax({
+              method: 'PUT',
+              url: '../contacts/' + contact._id,
+              data: contact
+            })
+                .done(function() {
+                    this.getContacts();
+                }.bind(this));
+        }
     },
 
     render: function() {
-        let curentContact = _.find(contacts, {id: this.state.curentId});
+        let curentContact = _.find(this.state.contacts, {_id: this.state.curentId}) || {_id: this.state.curentId};
         return  <div>
-                    <ContactList contacts={this.state.contacts} onClick={this.handleListClick}/>
-                    {curentContact ?
+                    <ContactList    contacts        ={this.state.contacts}
+                                    handleListClick ={this.handleListClick}
+                                    handAddClick    ={this.handAddClick}
+                                    handRemoveClick ={this.handRemoveClick}/>
+                    {this.state.curentId ?
                         <ContactEdit curentContact={curentContact} onSaveContact={this.onSaveContact} />
                     : null
                     }

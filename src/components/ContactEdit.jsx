@@ -22,6 +22,7 @@ module.exports = React.createClass({
     },
 
     render: function() {
+        let value = this.state.contact._id === 'new' ? 'add contact' : 'edit contact';
         return  <div>
                     <form onSubmit={this.onSubmitForm}>
                         <Input onChange={this.handleTextFieldChange} type="text" id="name"    value={this.state.contact.name} />
@@ -29,7 +30,7 @@ module.exports = React.createClass({
                         <Input onChange={this.handleTextFieldChange} type="text" id="phone"   value={this.state.contact.phone} />
                         <Input onChange={this.handleTextFieldChange} type="text" id="comment" value={this.state.contact.comment} />
                         <h5></h5>
-                        <input type="submit" value="add contact" />
+                        <input type="submit" value={value} />
                     </form>
                 </div>
     }
