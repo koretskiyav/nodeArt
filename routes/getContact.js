@@ -1,8 +1,8 @@
-var log             = require('../libs/log')(module);
-var ContactModel    = require('../libs/mongoose').ContactModel;
+var log        = require('../libs/log')(module);
+var Contact    = require('../models/contact').Contact;
 
 module.exports = function(req, res) {
-    return ContactModel.findById(req.params.id,
+    return Contact.findById(req.params.id,
     function (err, contact) {
         if (!err) {
             return res.send(contact);

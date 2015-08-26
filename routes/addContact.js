@@ -1,9 +1,9 @@
-var log             = require('../libs/log')(module);
-var ContactModel    = require('../libs/mongoose').ContactModel;
+var log        = require('../libs/log')(module);
+var Contact    = require('../models/contact').Contact;
 
 module.exports = function(req, res) {
 
-    var contact = new ContactModel({
+    var contact = new Contact({
 
         name:       req.body.name       || null,
         surName:    req.body.surName    || null,

@@ -1,17 +1,29 @@
 var express         = require('express');
-var routes          = require('./routes');
+var MongoStore      = require('connect-mongo')(express);
 var path            = require('path');
-var _               = require('lodash');
+var routes          = require('./routes');
 var log             = require('./libs/log')(module);
 var config          = require('./libs/config');
-var ContactModel    = require('./libs/mongoose').ContactModel;
+var mongoose        = require('./libs/mongoose');
 
 var app = express.createServer();
 
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.cookieParser());
-// app.use(express.session());
+app.use(express.session({
+    secret: config.get('session:secret'),
+    key:    config.get('session:key'),
+    cookie: config.get('session:cookie'),
+    store:  new MongoStore({mongoose_connection: mongoose.connection})
+}));
+
+app.use(function(req, res, next) {
+    if(!req.session.n) req.session.n = 1;
+    console.log(req.session.n++);
+    next();
+});
+
 app.use(app.router);
 
 app.use(express.static(path.join(__dirname, "public")));

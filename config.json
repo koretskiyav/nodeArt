@@ -2,5 +2,14 @@
     "port" : 8080,
     "mongoose": {
         "uri": "mongodb://localhost/db"
+    },
+    "session" : {
+        "secret": "secret",
+        "key": "sid",
+        "cookie": {
+            "path": "/",
+            "httpOnly": true,
+            "maxAge": null
+        }
     }
 }
