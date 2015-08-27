@@ -8,6 +8,7 @@ var photosSchema = new Schema({
 });
 
 var contactSchema = new Schema({
+    userId: { type: String, required: true },
     name: { type: String, required: true },
     surName: String,
     phone: { type: String, required: true },

@@ -2,7 +2,7 @@ var log        = require('../libs/log')(module);
 var Contact    = require('../models/contact').Contact;
 
 module.exports = function(req, res) {
-    return Contact.findById(req.params.id,
+    return Contact.find({_id: req.params.id, userId: req.session.user},
     function (err, contact) {
         if (!err) {
             return res.send(contact);

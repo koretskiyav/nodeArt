@@ -18,12 +18,6 @@ app.use(express.session({
     store:  new MongoStore({mongoose_connection: mongoose.connection})
 }));
 
-app.use(function(req, res, next) {
-    if(!req.session.n) req.session.n = 1;
-    console.log(req.session.n++);
-    next();
-});
-
 app.use(app.router);
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -43,6 +37,9 @@ app.use(function(err, req, res, next){
 });
 
 // CRUD
+app.get('/login',           routes.checkLogin);
+app.post('/login',          routes.login);
+app.post('/logout',         routes.logout);
 app.get('/contacts',        routes.getContacts);
 app.post('/contacts',       routes.addContact);
 app.get('/contacts/:id',    routes.getContact);

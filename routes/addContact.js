@@ -4,7 +4,7 @@ var Contact    = require('../models/contact').Contact;
 module.exports = function(req, res) {
 
     var contact = new Contact({
-
+        userId:     req.session.user    || null,
         name:       req.body.name       || null,
         surName:    req.body.surName    || null,
         phone:      req.body.phone      || null,

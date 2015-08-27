@@ -1,87 +1,115 @@
 import React        from 'react';
 import _            from 'lodash';
 import $            from 'jquery';
-import ContactList  from './ContactList.jsx';
-import ContactEdit  from './ContactEdit.jsx';
+import ContactBook  from './ContactBook.jsx';
+import Login        from './Login.jsx';
 
 module.exports = React.createClass({
 
     getInitialState: function() {
         return {
+            username: null,
             contacts: [],
-            curentId: null
+            err: null
         };
     },
 
     componentWillMount: function() {
-        this.getContacts();
+        this.getLogin();
     },
 
-    handleListClick: function(_id) {
-        this.setState({curentId: _id});
-    },
-
-    handAddClick: function() {
-        this.setState({curentId: 'new'});
-    },
-
-    handRemoveClick: function(_id) {
+    getLogin: function() {
         $.ajax({
-          method: 'DELETE',
-          url: '../contacts/' + this.state.curentId
+          method: 'GET',
+          url: './login'
+        })
+            .done(function(username) {
+                if (username) {
+                    this.setState({username: username});
+                    this.getContacts();
+                }
+            }.bind(this))
+    },
+
+    login: function(user) {
+        $.ajax({
+          method: 'POST',
+          url: './login',
+          data: user
+        })
+            .done(function(username) {
+                if (username) {
+                    this.setState({username: username});
+                    this.getContacts();
+                }
+            }.bind(this))
+            .fail(function(data) {
+                    this.setState({err: data.responseJSON.error});
+            }.bind(this));
+    },
+
+    logout: function(user) {
+        $.ajax({
+          method: 'POST',
+          url: './logout'
         })
             .done(function() {
-                this.setState({curentId: null});
-                this.getContacts();
-            }.bind(this));
+                this.setState({
+                    username: null,
+                    contacts: []
+                });
+            }.bind(this))
     },
 
     getContacts: function() {
         $.ajax({
           method: 'GET',
-          url: './contacts/'
+          url: './contacts'
         })
             .done(function(contacts) {
                 this.setState({contacts: contacts});
             }.bind(this))
     },
 
-    onSaveContact: function(contact) {
-        if (contact._id === 'new') {
-            $.ajax({
-              method: 'POST',
-              url: '../contacts/',
-              data: contact
-            })
-                .done(function(_id) {
-                    this.setState({curentId: _id});
-                    this.getContacts();
-                }.bind(this));
-        } else {
-            $.ajax({
-              method: 'PUT',
-              url: '../contacts/' + contact._id,
-              data: contact
-            })
-                .done(function() {
-                    this.getContacts();
-                }.bind(this));
-        }
+    addContact: function(contact) {
+        $.ajax({
+          method: 'POST',
+          url: '../contacts',
+          data: contact
+        })
+            .done(function(_id) {
+                this.getContacts();
+            }.bind(this));
+    },
+
+    updateContact: function(contact) {
+        $.ajax({
+          method: 'PUT',
+          url: '../contacts/' + contact._id,
+          data: contact
+        })
+            .done(function() {
+                this.getContacts();
+            }.bind(this));
+    },
+
+    removeContact: function(_id) {
+        $.ajax({
+          method: 'DELETE',
+          url: '../contacts/' + _id
+        })
+            .done(function() {
+                this.getContacts();
+            }.bind(this));
     },
 
     render: function() {
-        let curentContact = _.find(this.state.contacts, {_id: this.state.curentId}) || {_id: this.state.curentId};
-        return  <div>
-                    <ContactList    contacts        ={this.state.contacts}
-                                    handleListClick ={this.handleListClick}
-                                    handAddClick    ={this.handAddClick}
-                                    handRemoveClick ={this.handRemoveClick}/>
-                    {this.state.curentId ?
-                        <ContactEdit curentContact={curentContact} onSaveContact={this.onSaveContact} />
-                    : null
-                    }
-                </div>
+        if (!this.state.username) return <Login login={this.login}
+                                                err  ={this.state.err}/>
+        return  <ContactBook    contacts        ={this.state.contacts}
+                                addContact      ={this.addContact}
+                                updateContact   ={this.updateContact}
+                                removeContact   ={this.removeContact}
+                                logout          ={this.logout}/>
     }
 });
-
-
