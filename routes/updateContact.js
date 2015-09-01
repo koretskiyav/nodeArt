@@ -2,7 +2,7 @@ var log        = require('../libs/log')(module);
 var Contact    = require('../models/contact').Contact;
 
 module.exports = function(req, res) {
-    return Contact.find({_id: req.params.id, userId: req.session.user},
+    return Contact.findOne({_id: req.params.id, userId: req.session.user},
     function (err, contact) {
         if(!contact) {
             res.statusCode = 404;
@@ -13,6 +13,7 @@ module.exports = function(req, res) {
             contact.surName     = req.body.surName  || null;
             contact.phone       = req.body.phone    || null;
             contact.comment     = req.body.comment  || null;
+            contact.photo       = req.body.photo    || null;
         }
 
         contact.save(function(err, contact) {

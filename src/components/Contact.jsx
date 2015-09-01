@@ -8,12 +8,10 @@ module.exports = React.createClass({
 
     render: function() {
         return (
-            <div className="contact" onClick={this.handleClick}>
-                <h2 className="contactName">
-                    {this.props.contact.name} {this.props.contact.surName}
-                </h2>
-                {this.props.contact.phone}
-            </div>
+            <a className="mdl-navigation__link" onClick={this.handleClick}>
+                <h5>{this.props.contact.name} {this.props.contact.surName}</h5>
+                <span>{this.props.contact.phone}</span>
+            </a>
         );
     }
 });

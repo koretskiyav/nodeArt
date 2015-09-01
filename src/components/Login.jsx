@@ -1,5 +1,6 @@
 import React        from 'react';
 import Input        from './Input.jsx';
+import Button       from './Button.jsx';
 
 module.exports = React.createClass({
 
@@ -23,13 +24,29 @@ module.exports = React.createClass({
     },
 
     render: function() {
-        return  <div>
+        return  <div className="login">
                     <form onSubmit={this.onSubmitForm}>
-                        <Input onChange={this.handleTextFieldChange} type="text"     id="username" value={this.state.user.username} />
-                        <Input onChange={this.handleTextFieldChange} type="password" id="password" value={this.state.user.password} />
-                        <h5></h5>
-                        <input type="submit" value="login" />
-                        {this.props.err ? <h5>{this.props.err}</h5> : null}
+                        <div className="mdl-grid">
+                            <Input onChange ={this.handleTextFieldChange}
+                                   type     ="text"
+                                   id       ="username"
+                                   value    ={this.state.user.username} />
+                        </div>
+                        <div className="mdl-grid">
+                            <Input onChange ={this.handleTextFieldChange}
+                                   type     ="password"
+                                   id       ="password"
+                                   value    ={this.state.user.password} />
+                        </div>
+                        <div className="mdl-grid">
+                            <div className="login-button">
+                                <Button type        ="submit"
+                                        value       ="login" />
+                            </div>
+                        </div>
+                        <div className="mdl-grid">
+                            {this.props.err ? <h5>{this.props.err}</h5> : null}
+                        </div>
                     </form>
                 </div>
     }

@@ -1,3 +1,47 @@
-.contactList {
-    float: left;
+.login, .contact-edit, .login-button {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+.login-button {
+    position: relative;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
+    padding: 10px;
+}
+
+.demo-card-image {
+    width: 200px;
+    height: 200px;
+}
+
+.mdl-textfield {
+    width: 200px;
+}
+
+.add-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.add-file-input {
+    position: absolute;
+    right: 0;
+    font-size: 200px;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
 }

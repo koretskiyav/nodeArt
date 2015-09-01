@@ -8,7 +8,8 @@ module.exports = function(req, res) {
         name:       req.body.name       || null,
         surName:    req.body.surName    || null,
         phone:      req.body.phone      || null,
-        comment:    req.body.comment    || null
+        comment:    req.body.comment    || null,
+        photo:      req.body.photo      || null
 
     });
 

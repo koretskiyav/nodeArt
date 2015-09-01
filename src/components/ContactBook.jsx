@@ -2,7 +2,7 @@ import React        from 'react';
 import _            from 'lodash';
 import ContactList  from './ContactList.jsx';
 import ContactEdit  from './ContactEdit.jsx';
-import Logout       from './Logout.jsx';
+import Button       from './Button.jsx';
 
 module.exports = React.createClass({
 
@@ -10,6 +10,10 @@ module.exports = React.createClass({
         return {
             curentId: null
         };
+    },
+
+    componentDidUpdate: function() {
+        componentHandler.upgradeDom();
     },
 
     handleListClick: function(_id) {
@@ -35,7 +39,8 @@ module.exports = React.createClass({
 
     render: function() {
         let curentContact = _.find(this.props.contacts, {_id: this.state.curentId}) || {_id: this.state.curentId};
-        return  <div>
+        return (
+                <div className="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
                     <ContactList    contacts        ={this.props.contacts}
                                     handleListClick ={this.handleListClick}
                                     handAddClick    ={this.handAddClick}
@@ -44,7 +49,9 @@ module.exports = React.createClass({
                         <ContactEdit curentContact={curentContact} onSaveContact={this.onSaveContact} />
                     : null
                     }
-                    <Logout logout={this.props.logout}/>
                 </div>
+        )
     }
 });
+
+
