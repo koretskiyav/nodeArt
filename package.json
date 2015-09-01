@@ -2,6 +2,9 @@
   "name": "application-name",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "build": "webpack -p"
+  },
   "dependencies": {
     "express": "2.5.8",
     "winston": "~1.0.1",

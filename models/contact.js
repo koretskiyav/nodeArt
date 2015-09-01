@@ -5,9 +5,9 @@ var Schema = mongoose.Schema;
 
 var contactSchema = new Schema({
     userId: { type: String, required: true },
-    name: { type: String, required: true },
+    name: String,
     surName: String,
-    phone: { type: String, required: true },
+    phone: String,
     comment: String,
     photo: String
 });
